@@ -82,7 +82,6 @@ function Gluipertje(host, port) {
         parsed.created_at = new Date(parsed.created_at);
         parsed.updated_at = new Date(parsed.updated_at);
         parsed.deleted_at = new Date(parsed.deleted_at);
-        parsed.from = await getUserById(parsed.from_id);
         if (parsed.deleted_at == "Invalid Date") {
           delete parsed.deleted_at;
         }
