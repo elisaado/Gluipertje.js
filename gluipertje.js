@@ -26,13 +26,13 @@ class Gluipertje {
       let users = user;
       let parsed = [];
       for (let user of users) {
-        parsed.push(await this.parseUser(user));
+        parsed.push(await this.constructor.parseUser(user));
       }
       return parsed;
     }
     else if (user.constructor === String && user.length > 0) {
       try {
-        return await this.parseUser(JSON.parse(user));
+        return await this.constructor.parseUser(JSON.parse(user));
       }
       catch (e) {
         console.log(e);
@@ -99,44 +99,44 @@ class Gluipertje {
   }
 
   async getAllUsers() {
-    return await this.parseUser(await this.fetchJSON({url: `${this.baseurl}/users`}));
+    return await this.constructor.parseUser(await this.constructor.fetchJSON({url: `${this.baseurl}/users`}));
   }
 
   async getUserById(id) {
-    return await this.parseUser(await this.fetchJSON({url: `${this.baseurl}/user/${id}`}));
+    return await this.constructor.parseUser(await this.constructor.fetchJSON({url: `${this.baseurl}/user/${id}`}));
   }
 
   async getUserByToken(token) {
-    return await this.parseUser(await this.fetchJSON({url: `${this.baseurl}/${token}/me`}));
+    return await this.constructor.parseUser(await this.constructor.fetchJSON({url: `${this.baseurl}/${token}/me`}));
   }
 
   async revokeToken({username, password}) {
-    return await this.postJSON({url: `${this.baseurl}/token`, data: {username, password}});
+    return await this.constructor.postJSON({url: `${this.baseurl}/token`, data: {username, password}});
   }
 
   async createUser({nickname, username, password}) {
-    return await this.parseUser(await this.postJSON({url: `${this.baseurl}/users`, data: {nickname, username, password}}));
+    return await this.constructor.parseUser(await this.constructor.postJSON({url: `${this.baseurl}/users`, data: {nickname, username, password}}));
   }
 
 
   async getAllMessages() {
-    return await this.parseMessage(await this.fetchJSON({url: `${this.baseurl}/messages`}));
+    return await this.constructor.parseMessage(await this.constructor.fetchJSON({url: `${this.baseurl}/messages`}));
   }
 
   async getMessageById(id) {
-    return await this.parseMessage(await this.fetchJSON({url: `${this.baseurl}/message/${id}`}));
+    return await this.constructor.parseMessage(await this.constructor.fetchJSON({url: `${this.baseurl}/message/${id}`}));
   }
 
   async getMessagesByLimit(n) {
-    return await this.parseMessage(await this.fetchJSON({url: `${this.baseurl}/messages/${n}`}));
+    return await this.constructor.parseMessage(await this.constructor.fetchJSON({url: `${this.baseurl}/messages/${n}`}));
   }
 
   async getLastMessage() {
-    return (await getMessagesByLimit(1))[0];
+    return (await this.getMessagesByLimit(1))[0];
   }
 
   async sendMessage({token, body}) {
-    return await this.parseMessage(await this.postJSON({url: `${this.baseurl}/messages`, data: {token, body}}));
+    return await this.constructor.parseMessage(await this.constructor.postJSON({url: `${this.baseurl}/messages`, data: {token, body}}));
   }
 }
 
