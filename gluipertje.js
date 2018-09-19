@@ -1,17 +1,18 @@
 // Gluipertje.js by Eli Saado and contributors, licensed under the MIT license (https://github.com/elisaado/Gluipertje.js/blob/master/LICENSE).
 // Made to interact with the Gluipertje API (https://github.com/elisaado/gluipertje-backend)
 
-// "Class" Gluipertje, should implement all API methods.
-function Gluipertje(host, port) {
-  let baseurl = `${host}:${port}/api`;
+class Gluipertje {
+  constructor ({host, port}) {
+    this.this.baseurl = `${host}:${port}/api`;
+  }
 
-  async function fetchJSON(url) {
+  static async fetchJSON({url}) {
     let response = await fetch(url);
     let json = await response.json();
     return json;
   }
 
-  async function postJSON(url, data) {
+  static async postJSON({url, data}) {
     let response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -20,7 +21,7 @@ function Gluipertje(host, port) {
     return await response.json();
   }
 
-  async function parseUser(user) {
+  static async parseUser(user) {
     if (user.constructor === Array && user.length > 0) {
       let users = user;
       let parsed = [];
@@ -58,7 +59,7 @@ function Gluipertje(host, port) {
     }
   }
 
-  async function parseMessage(message) {
+  static async parseMessage(message) {
     if (message.constructor === Array && message.length > 0) {
       let messages = message;
       let parsed = [];
@@ -97,65 +98,46 @@ function Gluipertje(host, port) {
     }
   }
 
-  async function getAllUsers() {
-    return await parseUser(await fetchJSON(`${baseurl}/users`));
+  async getAllUsers() {
+    return await parseUser(await fetchJSON({url: `${this.baseurl}/users`}));
   }
 
-  async function getUserById(id) {
-    return await parseUser(await fetchJSON(`${baseurl}/user/${id}`));
+  async getUserById(id) {
+    return await parseUser(await fetchJSON({url: `${this.baseurl}/user/${id}`}));
   }
 
-  async function getUserByToken(token) {
-    return await parseUser(await fetchJSON(`${baseurl}/${token}/me`));
+  async getUserByToken(token) {
+    return await parseUser(await fetchJSON({url: `${this.baseurl}/${token}/me`}));
   }
 
-  async function revokeToken(username, password) {
-    return await postJSON(`${baseurl}/token`, {username: username, password: password});
+  async revokeToken({username, password}) {
+    return await postJSON({url: `${this.baseurl}/token`, data: {username, password}});
   }
 
-  async function createUser(nickname, username, password) {
-    return await parseUser(await postJSON(`${baseurl}/users`, {nickname: nickname, username: username, password: password}));
+  async createUser({nickname, username, password}) {
+    return await parseUser(await postJSON({url: `${this.baseurl}/users`, data: {nickname, username, password}}));
   }
 
 
-  async function getAllMessages() {
-    return await parseMessage(await fetchJSON(`${baseurl}/messages`));
+  async getAllMessages() {
+    return await parseMessage(await fetchJSON({url: `${this.baseurl}/messages`}));
   }
 
-  async function getMessageById(id) {
-    return await parseMessage(await fetchJSON(`${baseurl}/message/${id}`));
+  async getMessageById(id) {
+    return await parseMessage(await fetchJSON({url: `${this.baseurl}/message/${id}`}));
   }
 
-  async function getMessagesByLimit(n) {
-    return await parseMessage(await fetchJSON(`${baseurl}/messages/${n}`));
+  async getMessagesByLimit(n) {
+    return await parseMessage(await fetchJSON({url: `${this.baseurl}/messages/${n}`}));
   }
 
-  async function getLastMessage() {
+  async getLastMessage() {
     return (await getMessagesByLimit(1))[0];
   }
 
-  async function createMessage(token, body) {
-    return await parseMessage(await postJSON(`${baseurl}/messages`, {token: token, body: body}));
+  async sendMessage({token, body}) {
+    return await parseMessage(await postJSON({url: `${this.baseurl}/messages`, data: {token, body}}));
   }
-
-  this.message = {};
-  this.message.all = getAllMessages;
-  this.message.byLimit = getMessagesByLimit;
-  this.message.byId = getMessageById;
-  this.message.last = getLastMessage;
-  this.message.send = createMessage;
-
-  this.user = {};
-  this.user.all = getAllUsers;
-  this.user.byId = getUserById;
-  this.user.byToken = getUserByToken;
-  this.user.revokeToken = revokeToken;
-  this.user.create = createUser;
-  return this;
 }
 
-try {
-  module.exports = Gluipertje;
-} catch (e) {
-  console.log("You failed");
-}
+module.exports = Gluipertje;
