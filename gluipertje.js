@@ -26,13 +26,13 @@ class Gluipertje {
       let users = user;
       let parsed = [];
       for (let user of users) {
-        parsed.push(await parseUser(user));
+        parsed.push(await this.parseUser(user));
       }
       return parsed;
     }
     else if (user.constructor === String && user.length > 0) {
       try {
-        return await parseUser(JSON.parse(user));
+        return await this.parseUser(JSON.parse(user));
       }
       catch (e) {
         console.log(e);
@@ -64,13 +64,13 @@ class Gluipertje {
       let messages = message;
       let parsed = [];
       for (let message of messages) {
-        parsed.push(await parseMessage(message));
+        parsed.push(await this.parseMessage(message));
       }
       return parsed;
     }
     else if (message.constructor === String && message.length > 0) {
       try {
-        return await parseMessage(JSON.parse(message));
+        return await this.parseMessage(JSON.parse(message));
       }
       catch (e) {
         console.log(e);
@@ -99,36 +99,36 @@ class Gluipertje {
   }
 
   async getAllUsers() {
-    return await parseUser(await fetchJSON({url: `${this.baseurl}/users`}));
+    return await this.parseUser(await this.fetchJSON({url: `${this.baseurl}/users`}));
   }
 
   async getUserById(id) {
-    return await parseUser(await fetchJSON({url: `${this.baseurl}/user/${id}`}));
+    return await this.parseUser(await this.fetchJSON({url: `${this.baseurl}/user/${id}`}));
   }
 
   async getUserByToken(token) {
-    return await parseUser(await fetchJSON({url: `${this.baseurl}/${token}/me`}));
+    return await this.parseUser(await this.fetchJSON({url: `${this.baseurl}/${token}/me`}));
   }
 
   async revokeToken({username, password}) {
-    return await postJSON({url: `${this.baseurl}/token`, data: {username, password}});
+    return await this.postJSON({url: `${this.baseurl}/token`, data: {username, password}});
   }
 
   async createUser({nickname, username, password}) {
-    return await parseUser(await postJSON({url: `${this.baseurl}/users`, data: {nickname, username, password}}));
+    return await this.parseUser(await this.postJSON({url: `${this.baseurl}/users`, data: {nickname, username, password}}));
   }
 
 
   async getAllMessages() {
-    return await parseMessage(await fetchJSON({url: `${this.baseurl}/messages`}));
+    return await this.parseMessage(await this.fetchJSON({url: `${this.baseurl}/messages`}));
   }
 
   async getMessageById(id) {
-    return await parseMessage(await fetchJSON({url: `${this.baseurl}/message/${id}`}));
+    return await this.parseMessage(await this.fetchJSON({url: `${this.baseurl}/message/${id}`}));
   }
 
   async getMessagesByLimit(n) {
-    return await parseMessage(await fetchJSON({url: `${this.baseurl}/messages/${n}`}));
+    return await this.parseMessage(await this.fetchJSON({url: `${this.baseurl}/messages/${n}`}));
   }
 
   async getLastMessage() {
@@ -136,7 +136,7 @@ class Gluipertje {
   }
 
   async sendMessage({token, body}) {
-    return await parseMessage(await postJSON({url: `${this.baseurl}/messages`, data: {token, body}}));
+    return await this.parseMessage(await this.postJSON({url: `${this.baseurl}/messages`, data: {token, body}}));
   }
 }
 
