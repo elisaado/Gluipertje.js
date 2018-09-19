@@ -135,8 +135,8 @@ class Gluipertje {
     return (await this.getMessagesByLimit(1))[0];
   }
 
-  async sendMessage({token, body}) {
-    return await this.constructor.parseMessage(await this.constructor.postJSON({url: `${this.baseurl}/messages`, data: {token, body}}));
+  async sendMessage({token, text}) {
+    return await this.constructor.parseMessage(await this.constructor.postJSON({url: `${this.baseurl}/messages`, data: {token, text}}));
   }
 }
 
