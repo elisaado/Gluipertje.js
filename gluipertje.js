@@ -3,7 +3,7 @@
 
 class Gluipertje {
   constructor ({host, port}) {
-    this.this.baseurl = `${host}:${port}/api`;
+    this.baseurl = `${host}:${port}/api`;
   }
 
   static async fetchJSON({url}) {
