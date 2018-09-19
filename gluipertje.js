@@ -140,4 +140,8 @@ class Gluipertje {
   }
 }
 
-module.exports = Gluipertje;
+try {
+  module.exports = Gluipertje;
+} catch (e) {
+  console.log(e);
+}
