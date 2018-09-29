@@ -9,6 +9,7 @@ class Gluipertje {
   static async fetchJSON({url}) {
     let response = await fetch(url);
     let json = await response.json();
+    console.log({json});
     return json;
   }
 
@@ -31,11 +32,12 @@ class Gluipertje {
       return parsed;
     }
     else if (user.constructor === String && user.length > 0) {
+      if (user === "User not found") {
+        throw("User not found")
+      }
       try {
         return await this.constructor.parseUser(JSON.parse(user));
-      }
-      catch (e) {
-        console.log(e);
+      } catch (e) {
         return user;
       }
     }
