@@ -106,6 +106,10 @@ class Gluipertje {
     return await this.constructor.parseUser(await this.constructor.fetchJSON({url: `${this.baseurl}/user/${id}`}));
   }
 
+  async getUserByUsername(username) {
+    return await this.constructor.parseUser(await this.constructor.fetchJSON({url: `${this.baseurl}/user/${username}`}));
+  }
+
   async getUserByToken(token) {
     return await this.constructor.parseUser(await this.constructor.fetchJSON({url: `${this.baseurl}/${token}/me`}));
   }
